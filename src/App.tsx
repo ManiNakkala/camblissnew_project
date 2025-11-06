@@ -13,6 +13,9 @@ import VoiceReader from './components/VoiceReader';
 import { NewsProvider } from './context/NewsContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
+import { SubscriptionProvider } from './context/SubscriptionContext';
+import SubscriptionPage from './pages/SubscriptionPage';
+import SubscriptionSuccess from './pages/SubscriptionSuccess';
 
 function App() {
   const [selectedArticle, setSelectedArticle] = useState(null);
@@ -20,9 +23,10 @@ function App() {
 
   return (
     <AuthProvider>
-      <NewsProvider>
-        <LanguageProvider>
-          <Router>
+      <SubscriptionProvider>
+        <NewsProvider>
+          <LanguageProvider>
+            <Router>
             <div className="min-h-screen bg-gray-50">
               <Header />
               <main className="pt-20">
@@ -41,6 +45,8 @@ function App() {
                     setSelectedArticle(article);
                     setShowFullArticle(true);
                   }} />} />
+                  <Route path="/subscription" element={<SubscriptionPage />} />
+                  <Route path="/subscription/success" element={<SubscriptionSuccess />} />
                 </Routes>
               </main>
               
@@ -56,9 +62,10 @@ function App() {
               <VoiceReader />
               <Chatbot />
             </div>
-          </Router>
-        </LanguageProvider>
-      </NewsProvider>
+            </Router>
+          </LanguageProvider>
+        </NewsProvider>
+      </SubscriptionProvider>
     </AuthProvider>
   );
 }

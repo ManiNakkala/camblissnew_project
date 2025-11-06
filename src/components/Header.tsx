@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Globe, Search, Menu, X, Clock, Radio, Zap, Users, Tv, User, LogOut, MessageSquare } from 'lucide-react';
+import { Globe, Search, Menu, X, Clock, Radio, Zap, Users, Tv, User, LogOut, MessageSquare, Crown } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useNews } from '../context/NewsContext';
 import { useAuth } from '../context/AuthContext';
@@ -99,7 +99,7 @@ const Header = () => {
             </div>
             
             <div className="flex items-center space-x-4">
-              <select 
+              <select
                 value={currentLanguage}
                 onChange={(e) => setLanguage(e.target.value)}
                 className="bg-white/20 text-white text-xs border-none outline-none cursor-pointer px-3 py-1"
@@ -110,14 +110,22 @@ const Header = () => {
                   </option>
                 ))}
               </select>
-              
+
+              <Link
+                to="/subscription"
+                className="hidden md:flex items-center space-x-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 px-3 py-1 transition-all"
+              >
+                <Crown className="w-3 h-3" />
+                <span className="text-xs font-bold">Premium</span>
+              </Link>
+
               {isAuthenticated && user && (
                 <div className="hidden md:flex items-center space-x-2 bg-white/20 px-3 py-1">
                   <User className="w-3 h-3" />
                   <span className="text-xs">{user.camblissPoints} pts</span>
                 </div>
               )}
-              
+
               <div className="hidden md:block bg-white/20 px-3 py-1">
                 {new Date().toLocaleDateString(currentLanguage === 'hi' ? 'hi-IN' : currentLanguage === 'or' ? 'or-IN' : 'en-IN', {
                   weekday: 'short',
