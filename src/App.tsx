@@ -16,6 +16,7 @@ import { AuthProvider } from './context/AuthContext';
 import { SubscriptionProvider } from './context/SubscriptionContext';
 import SubscriptionPage from './pages/SubscriptionPage';
 import SubscriptionSuccess from './pages/SubscriptionSuccess';
+import LiveNewsPage from './pages/LiveNewsPage';
 
 function App() {
   const [selectedArticle, setSelectedArticle] = useState(null);
@@ -37,6 +38,7 @@ function App() {
                   }} />} />
                   <Route path="/social" element={<SocialPage />} />
                   <Route path="/dashboard" element={<UserDashboard />} />
+                  <Route path="/live-news" element={<LiveNewsPage />} />
                   <Route path="/category/:categoryName" element={<CategoryPage onArticleClick={(article) => {
                     setSelectedArticle(article);
                     setShowFullArticle(true);

@@ -19,6 +19,7 @@ const Header = () => {
 
   const categories = [
     { name: 'Home', path: '/', key: 'home' },
+    { name: 'Live News', path: '/live-news', key: 'livenews', icon: Radio },
     { name: 'India', path: '/category/india', key: 'india' },
     { name: 'World', path: '/category/world', key: 'world' },
     { name: 'Business', path: '/category/business', key: 'business' },
@@ -51,6 +52,7 @@ const Header = () => {
   const isActivePath = (path: string) => {
     if (path === '/' && location.pathname === '/') return true;
     if (path === '/social' && location.pathname === '/social') return true;
+    if (path === '/live-news' && location.pathname === '/live-news') return true;
     return location.pathname.startsWith(path) && path !== '/';
   };
 
@@ -161,19 +163,23 @@ const Header = () => {
               </Link>
 
               <nav className="hidden lg:flex space-x-2">
-                {categories.map(category => (
-                  <Link
-                    key={category.key}
-                    to={category.path}
-                    className={`bbc-nav-item px-5 py-2 text-sm font-medium transition-all duration-200 ${
-                      isActivePath(category.path)
-                        ? 'active'
-                        : ''
-                    }`}
-                  >
-                    {translations[category.key] || category.name}
-                  </Link>
-                ))}
+                {categories.map(category => {
+                  const Icon = category.icon;
+                  return (
+                    <Link
+                      key={category.key}
+                      to={category.path}
+                      className={`bbc-nav-item px-5 py-2 text-sm font-medium transition-all duration-200 flex items-center space-x-1 ${
+                        isActivePath(category.path)
+                          ? 'active'
+                          : ''
+                      }`}
+                    >
+                      {Icon && <Icon className="w-4 h-4 animate-pulse" />}
+                      <span>{translations[category.key] || category.name}</span>
+                    </Link>
+                  );
+                })}
               </nav>
             </div>
 

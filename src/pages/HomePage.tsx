@@ -146,6 +146,52 @@ const HomePage: React.FC<HomePageProps> = ({ onArticleClick }) => {
         </div>
       )}
 
+      {/* Live News Banner */}
+      <section className="mb-8">
+        <Link to="/live-news" className="block">
+          <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl shadow-2xl overflow-hidden hover:scale-105 transition-transform duration-300">
+            <div className="p-8 relative">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="bg-white/20 backdrop-blur-sm p-3 rounded-lg">
+                      <Radio className="w-8 h-8 animate-pulse" />
+                    </div>
+                    <div>
+                      <h2 className="text-3xl font-bold">Real-Time News Feed</h2>
+                      <p className="text-green-100 text-sm">Powered by GNews API</p>
+                    </div>
+                    <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                      <span className="text-xs font-bold">NEW</span>
+                    </div>
+                  </div>
+                  <p className="text-lg text-green-100 mb-4">
+                    Get the latest news from India and around the world with auto-refresh every 2 minutes
+                  </p>
+                  <div className="flex items-center space-x-6 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+                      <span>Auto-Updates</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Globe2 className="w-4 h-4" />
+                      <span>9 Categories</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Clock className="w-4 h-4" />
+                      <span>Real-Time</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="hidden md:block">
+                  <div className="text-6xl font-bold opacity-20">LIVE</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </section>
+
       {/* Featured Stories */}
       <section>
         <div className="bbc-section-header">

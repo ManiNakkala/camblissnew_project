@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
@@ -137,6 +138,115 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
     razorpayConfigured: !!(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_SECRET)
   });
+});
+
+// GNews API endpoint for real-time news
+app.get('/api/news', async (req, res) => {
+  try {
+    const { category = 'general', country = 'in', lang = 'en', max = 10 } = req.query;
+
+    const GNEWS_API_KEY = '13654c234068ad7d6b603f95b7e722f5';
+    const GNEWS_BASE_URL = 'https://gnews.io/api/v4';
+
+    // Build the API URL
+    const params = new URLSearchParams({
+      apikey: GNEWS_API_KEY,
+      category: category,
+      country: country,
+      lang: lang,
+      max: max.toString()
+    });
+
+    const apiUrl = `${GNEWS_BASE_URL}/top-headlines?${params.toString()}`;
+
+    const response = await axios.get(apiUrl, {
+      timeout: 10000
+    });
+
+    if (response.data && response.data.articles) {
+      res.json({
+        success: true,
+        articles: response.data.articles,
+        totalArticles: response.data.totalArticles || response.data.articles.length,
+        timestamp: new Date().toISOString()
+      });
+    } else {
+      throw new Error('Invalid response from GNews API');
+    }
+  } catch (error) {
+    console.error('GNews API Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json({
+        success: false,
+        error: error.response.data?.errors?.[0] || 'Failed to fetch news',
+        message: 'GNews API error'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch news from GNews API',
+      message: error.message
+    });
+  }
+});
+
+// GNews search endpoint
+app.get('/api/news/search', async (req, res) => {
+  try {
+    const { q, lang = 'en', max = 10 } = req.query;
+
+    if (!q) {
+      return res.status(400).json({
+        success: false,
+        error: 'Query parameter "q" is required'
+      });
+    }
+
+    const GNEWS_API_KEY = '13654c234068ad7d6b603f95b7e722f5';
+    const GNEWS_BASE_URL = 'https://gnews.io/api/v4';
+
+    const params = new URLSearchParams({
+      apikey: GNEWS_API_KEY,
+      q: q,
+      lang: lang,
+      max: max.toString()
+    });
+
+    const apiUrl = `${GNEWS_BASE_URL}/search?${params.toString()}`;
+
+    const response = await axios.get(apiUrl, {
+      timeout: 10000
+    });
+
+    if (response.data && response.data.articles) {
+      res.json({
+        success: true,
+        articles: response.data.articles,
+        totalArticles: response.data.totalArticles || response.data.articles.length,
+        timestamp: new Date().toISOString()
+      });
+    } else {
+      throw new Error('Invalid response from GNews API');
+    }
+  } catch (error) {
+    console.error('GNews Search API Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json({
+        success: false,
+        error: error.response.data?.errors?.[0] || 'Failed to search news',
+        message: 'GNews API error'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to search news from GNews API',
+      message: error.message
+    });
+  }
 });
 
 app.listen(PORT, () => {
